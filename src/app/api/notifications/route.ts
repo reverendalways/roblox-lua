@@ -8,9 +8,6 @@ const USERS_URI = process.env.USERS_MONGODB_URI || process.env.MONGODB_URI;
 const DB_NAME = 'users';
 const COLLECTION = 'UserNotifications';
 const JWT_SECRET = process.env.NEXTAUTH_SECRET;
-if (!JWT_SECRET) {
-  throw new Error('NEXTAUTH_SECRET environment variable is required');
-}
 
 const notificationsCache = new Map<string, { data: any; timestamp: number }>();
 const CACHE_TTL_MS = 60000;

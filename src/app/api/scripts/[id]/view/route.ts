@@ -7,9 +7,6 @@ import jwt from "jsonwebtoken";
 import { checkScriptViewRateLimit } from "@/lib/rate-limiter";
 
 const JWT_SECRET = process.env.NEXTAUTH_SECRET;
-if (!JWT_SECRET) {
-  throw new Error('NEXTAUTH_SECRET environment variable is required');
-}
 
 function getUserIdFromRequest(req: NextRequest): string | null {
   const token = req.cookies.get("token");

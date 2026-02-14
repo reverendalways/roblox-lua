@@ -8,9 +8,6 @@ import { rateLimitByIP } from '@/middleware/rate-limit';
 const DB_NAME = "users";
 const LIKES_COL = "likes";
 const JWT_SECRET = process.env.NEXTAUTH_SECRET;
-if (!JWT_SECRET) {
-  throw new Error('NEXTAUTH_SECRET environment variable is required');
-}
 
 async function getUsersDb() { return await getUsersDatabase(); }
 async function getScriptsDb() { return await getScriptsDatabase(); }

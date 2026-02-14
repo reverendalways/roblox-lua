@@ -14,9 +14,6 @@ const SCRIPTS_COL = process.env.SCRIPTS_COL || 'scripts';
 const ADMIN_FIELD = process.env.ADMIN_FIELD;
 const ADMIN_FIELD_VALUE = process.env.ADMIN_VALUE;
 const JWT_SECRET = process.env.NEXTAUTH_SECRET;
-if (!JWT_SECRET) {
-  throw new Error('NEXTAUTH_SECRET environment variable is required');
-}
 
 const BATCH_SIZE = 2000;
 const MAX_EXECUTION_TIME = 8000;

@@ -7,9 +7,6 @@ import { validateCSRFToken } from '@/lib/csrf-protection';
 import { rateLimitByIP } from '@/middleware/rate-limit';
 
 const JWT_SECRET = process.env.NEXTAUTH_SECRET;
-if (!JWT_SECRET) {
-  throw new Error('NEXTAUTH_SECRET environment variable is required');
-}
 
 export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   return handleDelete(req, params);

@@ -6,9 +6,6 @@ import crypto from 'crypto';
 import { StaffPermissions, StaffRank, DEFAULT_RANK_PERMISSIONS } from './staff-management';
 
 const JWT_SECRET = process.env.NEXTAUTH_SECRET;
-if (!JWT_SECRET) {
-  throw new Error('NEXTAUTH_SECRET environment variable is required');
-}
 
 const JWT_EXPIRES_IN = '24h';
 const REFRESH_TOKEN_EXPIRES_IN = '7d';

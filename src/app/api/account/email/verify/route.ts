@@ -10,9 +10,6 @@ const USERS_URI = process.env.USERS_MONGODB_URI || process.env.MONGODB_URI;
 const USERS_DB = 'users';
 const USERS_COL = 'ScriptVoid';
 const JWT_SECRET = process.env.NEXTAUTH_SECRET;
-if (!JWT_SECRET) {
-  throw new Error('NEXTAUTH_SECRET environment variable is required');
-}
 
 async function getUserId(req: NextRequest) {
   const token = req.cookies.get('token');

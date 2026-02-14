@@ -2,10 +2,6 @@ import { NextRequest } from 'next/server';
 
 const TURNSTILE_SECRET_KEY = process.env.TURNSTILE_SECRET_KEY;
 
-if (!TURNSTILE_SECRET_KEY) {
-  throw new Error('TURNSTILE_SECRET_KEY environment variable is required');
-}
-
 export interface TurnstileVerificationResult {
   success: boolean;
   error?: string;
@@ -26,10 +22,13 @@ export async function verifyTurnstileToken(
       error: 'Turnstile token is required'
     };
   }
+  if (!TURNSTILE_SECRET_KEY) {
+    return { success: false, error: 'Turnstile is not configured' };
+  }
 
   try {
     const formData = new FormData();
-    formData.append('secret', TURNSTILE_SECRET_KEY!);
+    formData.append('secret', TURNSTILE_SECRET_KEY);
     formData.append('response', token);
     
     if (remoteip) {

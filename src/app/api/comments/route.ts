@@ -10,9 +10,6 @@ import { rateLimitByIP } from '@/middleware/rate-limit';
 import { clearScriptsCache } from '@/lib/smart-cache';
 
 const JWT_SECRET = process.env.NEXTAUTH_SECRET;
-if (!JWT_SECRET) {
-  throw new Error('NEXTAUTH_SECRET environment variable is required');
-}
 
 export async function POST(req: NextRequest) {
   const rateLimitResponse = await rateLimitByIP(req, 'comment');

@@ -10,9 +10,6 @@ import { validateCSRFToken } from '@/lib/csrf-protection';
 import { rateLimitByIP } from '@/middleware/rate-limit';
 
 const JWT_SECRET = process.env.NEXTAUTH_SECRET;
-if (!JWT_SECRET) {
-  throw new Error('NEXTAUTH_SECRET environment variable is required');
-}
 
 const USERS_URI = process.env.USERS_MONGODB_URI || process.env.MONGODB_URI;
 const MONGODB_URI = process.env.MONGODB_URI!;

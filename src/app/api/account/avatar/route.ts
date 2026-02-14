@@ -10,15 +10,12 @@ const USERS_URI = process.env.USERS_MONGODB_URI!;
 const USERS_DB = 'users';
 const USERS_COL = 'ScriptVoid';
 const JWT_SECRET = process.env.NEXTAUTH_SECRET;
-if (!JWT_SECRET) {
-  throw new Error('NEXTAUTH_SECRET environment variable is required');
-}
 
-async function getUserId(req: NextRequest): Promise<string | null> {
+async function getUserId(req: NextRequest, jwtSecret: string): Promise<string | null> {
   const token = req.cookies.get('token');
   if (!token) return null;
   try {
-    const payload: any = jwt.verify(token.value, JWT_SECRET);
+    const payload: any = jwt.verify(token.value, jwtSecret);
     return payload.userId || null;
   } catch {
     return null;
@@ -28,9 +25,9 @@ async function getUserId(req: NextRequest): Promise<string | null> {
 export async function POST(req: NextRequest) {
   const rateLimitResponse = await rateLimitByIP(req, 'profilePicture');
   if (rateLimitResponse) return rateLimitResponse;
-  
+  if (!JWT_SECRET) return NextResponse.json({ error: 'Server configuration error' }, { status: 500 });
   try {
-    const userId = await getUserId(req);
+    const userId = await getUserId(req, JWT_SECRET);
     if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     const { imageBase64 } = await req.json();
     if (!imageBase64 || typeof imageBase64 !== 'string') {
@@ -70,9 +67,9 @@ export async function POST(req: NextRequest) {
 export async function DELETE(req: NextRequest) {
   const rateLimitResponse = await rateLimitByIP(req, 'profilePicture');
   if (rateLimitResponse) return rateLimitResponse;
-  
+  if (!JWT_SECRET) return NextResponse.json({ error: 'Server configuration error' }, { status: 500 });
   try {
-    const userId = await getUserId(req);
+    const userId = await getUserId(req, JWT_SECRET);
     if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     const client = await mongoPool.getClient();
     const col = client.db(USERS_DB).collection(USERS_COL);

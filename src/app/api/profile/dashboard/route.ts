@@ -10,9 +10,6 @@ const ADMIN_FIELD = process.env.ADMIN_FIELD;
 const ADMIN_FIELD_VALUE = process.env.ADMIN_VALUE;
 const JWT_SECRET = process.env.NEXTAUTH_SECRET;
 
-if (!JWT_SECRET) {
-  throw new Error('NEXTAUTH_SECRET environment variable is not set');
-}
 
 
 async function getUserIdFromToken(req: NextRequest): Promise<string | null> {

@@ -7,27 +7,27 @@ export interface CSRFToken {
 
 const csrfTokens = new Map<string, CSRFToken>();
 
-const CSRF_SECRET = process.env.CSRF_SECRET || process.env.NEXTAUTH_SECRET;
-if (!CSRF_SECRET) throw new Error('CSRF_SECRET or NEXTAUTH_SECRET environment variable is required');
 const CSRF_CONFIG = {
   TOKEN_LENGTH: 32,
   TOKEN_EXPIRY: 24 * 60 * 60 * 1000,
-  SECRET: CSRF_SECRET
 };
+
+function getCsrfSecret(): string {
+  const s = process.env.CSRF_SECRET || process.env.NEXTAUTH_SECRET;
+  if (!s) throw new Error('CSRF_SECRET or NEXTAUTH_SECRET environment variable is required');
+  return s;
+}
 
 export function generateCSRFToken(userId: string): string {
   if (!userId) {
     throw new Error('User ID is required for CSRF token generation');
   }
-  
+  const secret = getCsrfSecret();
   const token = randomBytes(CSRF_CONFIG.TOKEN_LENGTH).toString('hex');
-  
-  const hmac = createHmac('sha256', CSRF_CONFIG.SECRET);
+  const hmac = createHmac('sha256', secret);
   hmac.update(token + userId);
   const signature = hmac.digest('hex');
-  
   const fullToken = `${token}.${signature}`;
-  
   csrfTokens.set(fullToken, {
     token: fullToken,
     expiresAt: Date.now() + CSRF_CONFIG.TOKEN_EXPIRY
@@ -46,14 +46,13 @@ export function validateCSRFToken(token: string, userId: string): boolean {
     return false;
   }
   
-  const hmac = createHmac('sha256', CSRF_CONFIG.SECRET);
+  const secret = getCsrfSecret();
+  const hmac = createHmac('sha256', secret);
   hmac.update(tokenPart + userId);
   const expectedSignature = hmac.digest('hex');
-  
   if (signature !== expectedSignature) {
     return false;
   }
-  
   const storedToken = csrfTokens.get(token);
   if (storedToken && Date.now() > storedToken.expiresAt) {
     csrfTokens.delete(token);
@@ -82,7 +81,8 @@ export function getOrCreateCSRFToken(userId: string): string {
     if (Date.now() <= tokenData.expiresAt) {
       const [tokenPart, signature] = token.split('.');
       if (tokenPart && signature) {
-        const hmac = createHmac('sha256', CSRF_CONFIG.SECRET);
+        const secret = getCsrfSecret();
+        const hmac = createHmac('sha256', secret);
         hmac.update(tokenPart + userId);
         const expectedSignature = hmac.digest('hex');
         if (signature === expectedSignature) {

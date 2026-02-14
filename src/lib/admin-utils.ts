@@ -11,9 +11,6 @@ const ADMIN_FIELD_VALUE = process.env.ADMIN_VALUE;
 const ADMIN_TOKEN_1 = process.env.ADMIN_TOKEN_1;
 const ADMIN_TOKEN_2 = process.env.ADMIN_TOKEN_2;
 const JWT_SECRET = process.env.NEXTAUTH_SECRET;
-if (!JWT_SECRET) {
-  throw new Error('NEXTAUTH_SECRET environment variable is not set');
-}
 
 export async function checkAdminAccess(req: NextRequest, token1?: string, token2?: string) {
   try {
