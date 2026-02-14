@@ -1,5 +1,9 @@
 # ScriptVoid
 
+![ScriptVoid](image332344.png)
+
+![ScriptVoid](newimage2.png)
+
 Old project from about 6 months ago. A full-featured site for sharing and browsing Roblox Lua scripts.
 
 **Users:** Sign up (with Turnstile), log in, verify email, forgot/reset password. Account settings: change username, bio, avatar, email, password, or delete account. Browse scripts with search and filters, view script pages with code and comments, like scripts, report scripts or comments. Each user has a public profile with their scripts and stats.
@@ -20,4 +24,4 @@ Old project from about 6 months ago. A full-featured site for sharing and browsi
 
 Copy `.env.example` to `.env`, fill in the vars, then `npm install` and `npm run dev`. For a full UI you can drop `default.png`, `og-image.webp`, and `favicon.png` into `public/` if you want.
 
-Looking back I could’ve just used Prisma and PostgreSQL and been done with it. I went with MongoDB on purpose so I’d have to figure out the raw queries, connection pooling, and caching myself. Ended up learning a lot from it.
+Looking back I could’ve just used Prisma or PostgreSQL and been done with it. I went with MongoDB on purpose so I’d have to figure out the raw queries, connection pooling, and caching myself. Ended up learning a lot from it.
