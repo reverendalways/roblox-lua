@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: scriptvoid
+    env: node
+    plan: starter
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+    headers:
+      - path: /sitemap.xml
+        name: Content-Type
+        value: application/xml
+      - path: /robots.txt
+        name: Content-Type
+        value: text/plain
+      - path: /favicon.ico
+        name: Cache-Control
+        value: public, max-age=86400
